@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <title>Available Books</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a class="navbar-brand" href="/books">GutenShelf</a>
+      <a class="nav-link" href="https://www.gutenberg.org/browse/scores/top" target="_blank">Browse Books</a>
+    </div>
+    <div class="navbar-right">
+      <form class="search-form" th:action="@{/books/search}" method="get">
+        <input type="text" name="query" placeholder="Search for a book"/>
+        <button type="submit">Search &amp; Add</button>
+      </form>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Available Books</h1>
+    <div th:if="${message}" class="alert alert-info" th:text="${message}"></div>
+    <table class="books-table">
+      <thead>
+        <tr>
+          <th>Cover</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="b : ${books}">
+          <td>
+            <img th:src="${b.coverImageUrl != '' ? b.coverImageUrl : '/images/default-book-cover.jpg'}"
+                 class="book-cover"
+                 alt="Book Cover"/>
+          </td>
+          <td th:text="${b.title}"></td>
+          
+          <!-- NEW: Show "Read" or "Not read" based on b.read -->
+          <td th:text="${b.read} ? 'Read' : 'Not read'"></td>
+          
+          <td>
+            <a th:href="@{/book/read/{id}(id=${b.id})}" class="read-btn">Read</a>
+            <a th:href="@{/book/delete/{id}(id=${b.id})}" class="delete-btn"
+               onclick="return confirm('Are you sure you want to delete this book?');">
+               Delete
+            </a>
+            <a th:href="@{/summary/{id}(id=${b.id})}" class="read-btn" style="margin-left: 0.5rem;">Get Summary</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

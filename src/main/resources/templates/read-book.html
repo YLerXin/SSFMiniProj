@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Read Book</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<div class="container">
+    <h1>Book Content</h1>
+    <style>
+      .book-content.small { font-size: 0.8rem; }
+      .book-content.medium { font-size: 1rem; }
+      .book-content.large { font-size: 1.2rem; }
+      .book-content {
+          max-height: 600px;
+          overflow-y: auto;
+      }
+    </style>
+    <pre th:class="'book-content ' + ${fontSize}" th:text="${textContent}"></pre>
+    <form th:action="@{/book/readFontSize/{id}(id=${bookId})}" method="post">
+        <label for="fontSizeSelect">Font Size:</label>
+        <select name="fontSize" id="fontSizeSelect">
+            <option th:value="'small'" th:selected="${fontSize.equals('small')}">S</option>
+            <option th:value="'medium'" th:selected="${fontSize.equals('medium')}">M</option>
+            <option th:value="'large'" th:selected="${fontSize.equals('large')}">L</option>
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+    <form th:action="@{/book/markread/{id}(id=${bookId})}" method="post">
+        <button type="submit">Mark as Read</button>
+    </form>
+    <a href="/books">Back to Listings</a>
+</div>
+</body>
+</html>
